@@ -16,7 +16,7 @@ const Home = ({posts}) => {
   //     .catch(err => console.error(`There was a problem - ${err}`));
   // }, []);
 
-  const postList = Boolean(posts) 
+  const postList = Boolean(posts) && posts.length 
     ? (posts.map((post, idx) => 
       <div key={post.id} className="post card">
         <img src={Pokeball} alt="pokeball" />
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(null, mapStateToProps)(Home);
+export default connect(mapStateToProps)(Home);
