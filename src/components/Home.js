@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Pokeball from '../pokeball.png';
 
 const Home = () => {
   const [posts, setPosts] = useState(null);
@@ -17,9 +18,10 @@ const Home = () => {
   const postList = Boolean(posts) 
     ? (posts.map((post, idx) => 
       <div key={post.id} className="post card">
+        <img src={Pokeball} alt="pokeball" />
         <div className="card-content">
           <Link to={`/${post.id}`}>
-          <span className="card-title">
+          <span className="card-title red-text">
             {post.title}
           </span>
           </Link>
@@ -32,7 +34,7 @@ const Home = () => {
     
 
   return (
-    <div className="container">
+    <div className="container home">
       <h4 className="center">
         Home
       </h4>
