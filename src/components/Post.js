@@ -1,37 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import { useLocation, useMatch, useParams } from 'react-router';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actions } from '../store/actions/postActions';
 
-const Post = () => {
-  const [id, setId] = useState(null);
+const Post = ({deletePost, posts}) => {
   const [post, setPost] = useState(null);
   const params = useParams();
-  const location = useLocation();
-  const match = useMatch(":post_id");
-  const URL = 'https://jsonplaceholder.typicode.com/posts/';
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const id = params.post_id;
-    
-    axios.get(URL + id)
-      .then(response => {
-        setPost(response.data);
-      })
-      .catch(err => console.error(`There was a problem - ${err}`));
-    setId(id);
-  }, []);
+    const id = Number(params.post_id);
 
-  console.log("params: ", params)
-  console.log("match: ", match);
-  console.log("location: ", location)
-  console.log("id: ", id);
-  console.log(post);
+    setPost(Boolean(posts) ? posts.find(post => post.id === id) : null);
+  }, [posts]);
+
+  const handleClick = () => {
+    deletePost(post.id);
+    navigate("/");
+  };
 
   const postItem = Boolean(post) 
     ? (
       <div className="post">
         <h4 className="center">{post.title}</h4>
         <p>{post.body}</p>
+        <div className="center">
+          <button className="btn grey" onClick={handleClick}>
+            Delete post
+            </button>
+        </div>
       </div>
     )
     : (
@@ -45,4 +43,16 @@ const Post = () => {
   );
 };
 
-export default Post;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    deletePost: actions.deletePost,
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);
