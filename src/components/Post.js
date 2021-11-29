@@ -1,31 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import { useLocation, useMatch, useParams } from 'react-router';
-import axios from 'axios';
+import { useParams } from 'react-router';
+import { connect } from 'react-redux';
 
-const Post = () => {
-  const [id, setId] = useState(null);
+const Post = ({posts}) => {
   const [post, setPost] = useState(null);
   const params = useParams();
-  const location = useLocation();
-  const match = useMatch(":post_id");
-  const URL = 'https://jsonplaceholder.typicode.com/posts/';
 
   useEffect(() => {
     const id = params.post_id;
     
-    axios.get(URL + id)
-      .then(response => {
-        setPost(response.data);
-      })
-      .catch(err => console.error(`There was a problem - ${err}`));
-    setId(id);
+    setPost(Boolean(posts) ? posts[id] : null);
   }, []);
-
-  console.log("params: ", params)
-  console.log("match: ", match);
-  console.log("location: ", location)
-  console.log("id: ", id);
-  console.log(post);
 
   const postItem = Boolean(post) 
     ? (
@@ -45,4 +30,10 @@ const Post = () => {
   );
 };
 
-export default Post;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+  }
+};
+
+export default connect(mapStateToProps)(Post);
