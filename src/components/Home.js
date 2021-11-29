@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import Pokeball from '../pokeball.png';
 
-const Home = () => {
-  const [posts, setPosts] = useState(null);
-  const URL = 'https://jsonplaceholder.typicode.com/posts';
+const Home = ({posts}) => {
+  // const [posts, setPosts] = useState(null);
+  // const URL = 'https://jsonplaceholder.typicode.com/posts';
 
-  useEffect(() => {
-    axios.get(URL)
-      .then(response => {
-        setPosts(response.data.slice(0,10));
-      })
-      .catch(err => console.error(`There was a problem - ${err}`));
-  }, []);
+  // useEffect(() => {
+  //   axios.get(URL)
+  //     .then(response => {
+  //       setPosts(response.data.slice(0,10));
+  //     })
+  //     .catch(err => console.error(`There was a problem - ${err}`));
+  // }, []);
 
   const postList = Boolean(posts) 
     ? (posts.map((post, idx) => 
@@ -43,4 +44,10 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts
+  };
+};
+
+export default connect(null, mapStateToProps)(Home);
