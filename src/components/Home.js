@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import Pokeball from '../pokeball.png';
+import { bindActionCreators } from 'redux';
+import { actions } from '../store/actions/postActions';
 
-const Home = ({posts}) => {
-  // const [posts, setPosts] = useState(null);
-  // const URL = 'https://jsonplaceholder.typicode.com/posts';
-
-  // useEffect(() => {
-  //   axios.get(URL)
-  //     .then(response => {
-  //       setPosts(response.data.slice(0,10));
-  //     })
-  //     .catch(err => console.error(`There was a problem - ${err}`));
-  // }, []);
+const Home = ({loadPosts, posts}) => {
+  useEffect(() => {
+    loadPosts();
+  }, []);
 
   const postList = Boolean(posts) && posts.length 
     ? (posts.map((post, idx) => 
@@ -50,4 +44,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    loadPosts: actions.loadPosts,
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

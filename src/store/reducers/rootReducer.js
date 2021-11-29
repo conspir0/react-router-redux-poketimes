@@ -1,16 +1,23 @@
-import constants from "../constants";
+import {constants} from "../constants";
 
 const init = {
-  posts: [{id: "1", title: "title", body: "body"},]
+  posts: []
 };
 
 const rootReducer = (state = init, action) => {
   switch (action.type) {
     case constants.DELETE_POST:
+    const posts = state.posts.filter(post => post.id !== action.id);
+
     return ({
       ...state,
-      posts: state.posts.filter(post => post.id !== action.id),
+      posts,
     });
+    case constants.LOAD_POSTS:
+      return({
+        ...state,
+        posts: action.payload
+      })
     default:
       return state;
   }

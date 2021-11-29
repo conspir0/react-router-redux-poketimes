@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { deletePost } from '../store/actions/postActions';
+import { actions } from '../store/actions/postActions';
 
 const Post = ({deletePost, posts}) => {
   const [post, setPost] = useState(null);
@@ -10,10 +10,10 @@ const Post = ({deletePost, posts}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const id = params.post_id;
+    const id = Number(params.post_id);
 
     setPost(Boolean(posts) ? posts.find(post => post.id === id) : null);
-  }, []);
+  }, [posts]);
 
   const handleClick = () => {
     deletePost(post.id);
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    deletePost
+    deletePost: actions.deletePost,
   }, dispatch);
 };
 
