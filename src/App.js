@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import About from './components/About';
@@ -6,8 +6,7 @@ import Contact from './components/Contact';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 
-class App extends Component {
-  render() {
+const App = () => {
     return (
       <Router>
         <div className="App">
@@ -21,6 +20,5 @@ class App extends Component {
       </Router>
     );
   };
-}
 
 export default App;
